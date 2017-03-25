@@ -1,0 +1,13 @@
+# don't include these files
+_pyfind
+_todo.txt
+*.json
+*.dir
+*.csv
+*.txt
+temp.*
+
+# don't include these subfolders
+__pycache__/
+.cache/
+.vscode/
