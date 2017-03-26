@@ -11,23 +11,25 @@ def bytecount(numbytes=0): #-------------------------------------------------<<<
     1st parameter = # bytes (may be negative)
     Returns a short string version, such as '17 bytes' or '47.6 GB'
     """
-    retval = '-' if numbytes<0 else '' # leading '-' for negative values
+    retval = '-' if numbytes < 0 else '' # leading '-' for negative values
     absvalue = abs(numbytes)
-    if absvalue<1024:
-        retval = retval + format(absvalue,'.0f') + ' bytes'
-    elif (1024 <= absvalue < 1024*100):
-        retval = retval + format(absvalue/1024,'0.1f') + ' KB'
-    elif (1024*100 <= absvalue < 1024*1024):
-        retval = retval + format(absvalue/1024,'.0f') + ' KB'
-    elif (1024*1024 <= absvalue < 1024*1024*100):
-        retval = retval + format(absvalue/(1024*1024),'0.1f') + ' MB'
-    elif (1024*1024*100 <= absvalue < 1024*1024*1024):
-        retval = retval + format(absvalue/(1024*1024),'.0f') + ' MB'
+    if absvalue < 1024:
+        retval = retval + format(absvalue, '.0f') + ' bytes'
+    elif 1024 <= absvalue < 1024*100:
+        retval = retval + format(absvalue/1024, '0.1f') + ' KB'
+    elif 1024*100 <= absvalue < 1024*1024:
+        retval = retval + format(absvalue/1024, '.0f') + ' KB'
+    elif 1024*1024 <= absvalue < 1024*1024*100:
+        retval = retval + format(absvalue/(1024*1024), '0.1f') + ' MB'
+    elif 1024*1024*100 <= absvalue < 1024*1024*1024:
+        retval = retval + format(absvalue/(1024*1024), '.0f') + ' MB'
     else:
-        retval = retval + format(absvalue/(1024*1024*1024),',.1f') + ' GB'
+        retval = retval + format(absvalue/(1024*1024*1024), ',.1f') + ' GB'
     return retval
 
 def cls(): #-----------------------------------------------------------------<<<
+    """Cross-platform clear-screen command for console apps.
+    """
     if os.name == 'nt':
         _ = os.system('cls')
     else:
@@ -40,16 +42,17 @@ class ChangeDirectory: #-----------------------------------------------------<<<
         # code that should run in folder
         # returns to previous working directory when done
     """
-    def __init__(self, newPath):
-        self.newPath = newPath
+    def __init__(self, new_path):
+        self.new_path = new_path
+        self.saved_path = None
     def __enter__(self):
-        self.savedPath = os.getcwd()
-        os.chdir(self.newPath)
+        self.saved_path = os.getcwd()
+        os.chdir(self.new_path)
     def __exit__(self, etype, value, traceback):
-        os.chdir(self.savedPath)
+        os.chdir(self.saved_path)
     def __repr__(self):
-        return '<' + (self.__class__.__name__ + ' object, newPath = ' +
-        self.newPath + '>')
+        return '<' + (self.__class__.__name__ + ' object, new_path = ' +
+                      self.new_path + '>')
 
 def filesize(filename): #----------------------------------------------------<<<
     """Return byte size of specified file.
