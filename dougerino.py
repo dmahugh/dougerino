@@ -4,6 +4,7 @@ Typically we install this with "pip install --editable ." and then can make
 changes/additions here and they're immediately available in other projects.
 """
 import calendar
+import collections
 import configparser
 import csv
 import datetime
@@ -79,22 +80,16 @@ def cls(): #-----------------------------------------------------------------<<<
     else:
         _ = os.system('clear')
 
-def column_values(infile, column, outfile): #--------------------------------<<<
+def csv_count(csvfile, column): #------------------------------------<<<
     """Generate a summary of unique values for a column/field.
 
     infile = a CSV file; must have a header row
     column = a column number or name
-    outfile = output file to be written (optional)
 
-    the output file contains each unique value found in the specified column,
-    sorted alphabetically. Each line contains the value twice, separated by
-    a comma. The second value is typically manually edited to create a shorter
-    version for reports, and the lines may be re-arranged to specify the order
-    these values should appear in reports.
-    See election-data project's race_abbrev() and race_sort() for examples of
-    how this data can be used.
+    Returns a dictionary whose keys are the unique values found in the
+    specified field, and values are the count for each unique value.
     """
-    colnames = open(infile, 'r').readline().strip().split(',')
+    colnames = open(csvfile, 'r').readline().strip().split(',')
     if isinstance(column, int):
         colno = column
         colname = colnames[colno]
@@ -106,18 +101,17 @@ def column_values(infile, column, outfile): #--------------------------------<<<
                 colno = fieldno
                 break
 
-    myreader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='"')
+    myreader = csv.reader(open(csvfile, 'r'), delimiter=',', quotechar='"')
     next(myreader, None) # skip header
-    value_list = set()
+    unique_values = collections.OrderedDict()
     for values in myreader:
-        value_list.add(values[colno])
+        key = values[colno]
+        if key in unique_values:
+            unique_values[key] += 1
+        else:
+            unique_values[key] = 1
 
-    for value in sorted(value_list):
-        print(value + ',' + value)
-    if outfile:
-        with open(outfile, 'w') as fhandle:
-            for value in sorted(value_list):
-                fhandle.write(value + ',' + value + '\n')
+    return unique_values
 
 def csv2dict(filename, key_column, val_column, lower=True, header=True): #---<<<
     """
@@ -255,10 +249,12 @@ def filesize(filename): #----------------------------------------------------<<<
     """
     return os.stat(filename).st_size
 
-def hashkey(string): #-------------------------------------------------------<<<
-    """Return MD5 hex digest for the UTF-8 encoding of a string value.
+def hashkey(string, encoding='utf-8'): #-------------------------------------<<<
+    """Return MD5 hex digest for a string value.
+
+    Optional encoding argument defaults to UTF-8.
     """
-    return hashlib.md5(string.encode('utf-8')).hexdigest()
+    return hashlib.md5(string.encode(encoding)).hexdigest()
 
 def json2csv(jsondata, header=True): #----------------------------------------<<<
     """Convert JSON data to CSV.
@@ -283,9 +279,9 @@ def json2csv(jsondata, header=True): #----------------------------------------<<
     return csvdata
 
 def list_projection(values, columns): #--------------------------------------<<<
-    """Return specified set of fields/columns from a line of a CSV file.
+    """Return a comma-delimited string containing specified values from a list.
 
-    values = list of values, as returned from a csv.reader().
+    values = list of values. (E.g., as returned from a csv.reader().)
     columns = list of indices (0-based) for the columns that are to be included
               in the returned line.
 
@@ -391,9 +387,3 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
     pass # to do - unit tests
-
-    #csvdata = open('test.csv', 'r').read()
-    #converted = csv2json(csvdata, header=True)
-    #print('>>>>>>>>>>>> csv2json() output:')
-    #for row in converted:
-    #    print(str(row))
