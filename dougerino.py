@@ -114,6 +114,59 @@ def column_values(infile, column, outfile): #--------------------------------<<<
     for value in sorted(value_list):
         print(value + ',' + value)
 
+def csv2dict(filename, key_column, val_column, lower=True, header=True): #---<<<
+    """
+    Create a dictionary from two columns in a CSV file.
+
+    filename = name of .CSV file
+    key_column = column # (0-based) for dictionary keys
+    val_column = column # (0-based) for dictionary values
+    lower = whether to make the keys lowercase
+    header = whether .CSV file has a header row as the first line
+
+    Returns the dictionary.
+    """
+    thedict = dict()
+    firstline = True
+    for line in open(filename, 'r').readlines():
+        if firstline and header:
+            firstline = False
+            continue # skip over the header line
+        key_val = line.split(',')[key_column].strip()
+        val_val = line.split(',')[val_column].strip()
+        if lower:
+            thedict[key_val.lower()] = val_val
+        else:
+            thedict[key_val] = val_val
+    return thedict
+
+def csv2list(filename, column, lower=True, header=True, dedupe=True): #------<<<
+    """
+    Create a list from a column in a CSV file.
+
+    filename = name of .CSV file
+    column = column # (0-based) to be returned as a list
+    lower = whether to make the values in the list lowercase
+    header = whether .CSV file has a header row as the first line
+    dedupe = whether to remove duplicate values
+
+    Returns the list.
+    """
+    thelist = []
+    firstline = True
+    for line in open(filename, 'r').readlines():
+        if firstline and header:
+            firstline = False
+            continue # skip over the header line
+        listval = line.split(',')[column].strip().lower() if lower else \
+            line.split(',')[column].strip()
+        thelist.append(listval)
+
+    if dedupe:
+        return sorted(list(set(thelist)))
+    else:
+        return sorted(thelist)
+
 def csvfields(values, columns): #--------------------------------------------<<<
     """Return specified set of fields/columns from a line of a CSV file.
 
@@ -244,5 +297,4 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
-    # to do - unit tests
-    printlines('_todo.txt', 3)
+    pass # to do - unit tests
