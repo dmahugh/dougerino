@@ -3,6 +3,7 @@
 Typically we install this with "pip install --editable ." and then can make
 changes/additions here and they're immediately available in other projects.
 """
+import calendar
 import configparser
 import csv
 import datetime
@@ -11,7 +12,7 @@ import json
 import os
 import time
 
-def bytecount(numbytes=0): #-------------------------------------------------<<<
+def bytecount(numbytes): #---------------------------------------------------<<<
     """Convert byte count to display string as bytes, KB, MB or GB.
 
     1st parameter = # bytes (may be negative)
@@ -32,6 +33,24 @@ def bytecount(numbytes=0): #-------------------------------------------------<<<
     else:
         retval = retval + format(absvalue/(1024*1024*1024), ',.1f') + ' GB'
     return retval
+
+def cdow(date_or_year, month_int=1, day_int=1): #----------------------------<<<
+    """Convert a date or year/month/day to a day-of-week string.
+
+    date_or_year = a date/datetime, or year <int>
+
+    If a year value is passed, then month_int
+                   and day_int are required.
+    month_int = month as <int>
+    day_int = day as <int>
+
+    Returns a weekday name (e.g., "Tuesday").
+    """
+    if isinstance(date_or_year, datetime.datetime):
+        return calendar.day_name[date_or_year.weekday()]
+    else:
+        thedate = datetime.date(date_or_year, month_int, day_int)
+        return calendar.day_name[thedate.weekday()]
 
 class ChangeDirectory: #-----------------------------------------------------<<<
     """Context manager for changing current working directory.
@@ -134,14 +153,14 @@ def percent(count, total): #-------------------------------------------------<<<
         return 0
     return 100 * float(count) / float(total)
 
-def printlines(filename=None, numlines=1): #---------------------------------<<<
+def printlines(filename, numlines=1): #--------------------------------------<<<
     """Print the first X lines of a text file (default = 1 line).
     """
     with open(filename, 'r') as fhandle:
         for _ in range(0, numlines):
             print(fhandle.readline().strip())
 
-def setting(topic=None, section=None, key=None): #---------------------------<<<
+def setting(topic, section, key): #------------------------------------------<<<
     """Retrieve a private setting stored in a local .ini file.
 
     topic = name of the ini file; e.g., 'azure' for azure.ini
@@ -160,7 +179,7 @@ def setting(topic=None, section=None, key=None): #---------------------------<<<
         retval = None
     return retval
 
-def timestamp(filename=None): #----------------------------------------------<<<
+def time_stamp(filename=None): #---------------------------------------------<<<
     """Return timestamp as a string.
 
     filename = optional file, if passed then timestamp is returned for the file
@@ -226,4 +245,4 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
     # to do - unit tests
-    print(yeardiff('11/14/2009', '3/25/2017'))
+    printlines('_todo.txt', 3)
