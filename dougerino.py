@@ -94,6 +94,21 @@ def column_values(infile, column, outfile): #--------------------------------<<<
     for value in sorted(value_list):
         print(value + ',' + value)
 
+def csvfields(values, columns): #--------------------------------------------<<<
+    """Return specified set of fields/columns from a line of a CSV file.
+
+    values = list of values, as returned from a csv.reader().
+    columns = list of indices (0-based) for the columns that are to be included
+              in the returned line.
+
+    Returns a comma-delimited text string containing only the desired columns
+    in the order specified in the passed list.
+    """
+    returned = []
+    for column in columns:
+        returned.append(values[column])
+    return ','.join(returned)
+
 def days_since(datestr): #---------------------------------------------------<<<
     """Return # days since a date in YYYY-MM-DD format.
     """
