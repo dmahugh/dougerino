@@ -13,10 +13,8 @@ from dougerino import bytecount, ChangeDirectory, progressbar
 # values are rounded), instead the goal is a simple short human-readable
 # display that uses common byte-oriented suffixes such as KB/MB/GB.
 print('\n' + '>>  bytecount() function  <<'.center(75, '-') + '\n')
-print('bytecount(123)         = ' + bytecount(123))
-print('bytecount(5280)        = ' + bytecount(5280))
-print('bytecount(12345678)    = ' + bytecount(12345678))
-print('bytecount(12345678901) = ' + bytecount(12345678901))
+for testval in [123, 5280, 12345678, 12345678901]:
+    print('bytecount({0}) = {1}'.format(testval, bytecount(testval)))
 
 #-----------------------------------------------------------------------------
 # ChangeDirectory - context manager class for changing working directory

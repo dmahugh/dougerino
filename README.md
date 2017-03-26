@@ -6,24 +6,31 @@ Library of functions for common Python development tasks.
 * [ChangeDirectory](#ChangeDirectory)
 * [cls](#cls)
 * [column_values](#column_values)
-# [csv2dict](#csv2dict)
-# [csv2list](#csv2list)
-# [csvfields](#csvfields)
-# [days_since](#days_since)
-# [dicts2csv](#dicts2csv)
-# [dicts2json](#dicts2json)
-# [filesize](#filesize)
-# [hashkey](#hashkey)
-# [percent](#percent)
-# [printlines](#printlines)
-# [progressbar](#progressbar)
-# [setting](#setting)
-# [time_stamp](#time_stamp)
-# [yeardiff](#yeardiff)
+* [csv2dict](#csv2dict)
+* [csv2list](#csv2list)
+* [days_since](#days_since)
+* [dicts2csv](#dicts2csv)
+* [dicts2json](#dicts2json)
+* [filesize](#filesize)
+* [hashkey](#hashkey)
+* [list_projection](#list_projection)
+* [percent](#percent)
+* [printlines](#printlines)
+* [progressbar](#progressbar)
+* [setting](#setting)
+* [time_stamp](#time_stamp)
+* [yeardiff](#yeardiff)
 
 ## bytecount
 
-///
+Function for concise display of approximate numeric values. Examples:
+
+```
+bytecount(123) = 123 bytes
+bytecount(5280) = 5.2 KB
+bytecount(12345678) = 11.8 MB
+bytecount(12345678901) = 11.5 GB
+```
 
 ## cdow
 
@@ -31,8 +38,7 @@ Library of functions for common Python development tasks.
 
 ## ChangeDirectory
 
-For tools that work with files and folders, it's often useful to temporarily change the current working directory. This context managers provides a simple syntax for changing to another directory and then reverting to the prior working directory when don
-
+This class is a context manager for changing to another directory and then reverting to the prior working directory when done.
 ```python
 from dougerino import ChangeDirectory
 with ChangeDirectory(folder):
@@ -55,10 +61,6 @@ with ChangeDirectory(folder):
 
 ///
 
-## csvfields
-
-///
-
 ## days_since
 
 ///
@@ -76,6 +78,10 @@ with ChangeDirectory(folder):
 ///
 
 ## hashkey
+
+///
+
+## list_projection
 
 ///
 
