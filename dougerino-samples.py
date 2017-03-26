@@ -1,10 +1,9 @@
 """Example usage of a few things from dougerino.py
 """
 import os
-from dougerino import bytecount
-from dougerino import ChangeDirectory
-from dougerino import find
-from dougerino import hexprint
+import time
+
+from dougerino import bytecount, ChangeDirectory, progressbar
 
 #-----------------------------------------------------------------------------
 # bytecount() - convert byte count to display string as bytes, KB, MB or GB
@@ -32,15 +31,11 @@ with ChangeDirectory(r'C:\Windows'): # this is all it takes
 print('\ndefault directory -> ' + os.getcwd())
 
 #-----------------------------------------------------------------------------
-# find - search text files such as source code
+# progressbar - display progress bar showing completion status
 #-----------------------------------------------------------------------------
-print('\n' + '>>  find() function  <<'.center(75, '-'))
-print(">>> find('searchfor')")
-find('searchfor')
-
-#-----------------------------------------------------------------------------
-# hexprint - Hex dump utility, with output format similar to DOS debug
-#-----------------------------------------------------------------------------
-print('\n' + '>>  hexprint() function  <<'.center(75, '-') + '\n')
-print(">>> hexprint('dougerino-samples.py', offset=140, totbytes=30)")
-hexprint('dougerino-samples.py', offset=140, totbytes=30)
+print('Example of using progressbar() function ...')
+progressbar.lastdisplay = ''
+for progress_value in range(100):
+    progressbar(progress_value/100, bar_length=80, done_char='#')
+    time.sleep(.02)
+progressbar(1, bar_length=80, done_char='#') # when value is 1, printed string ends with \n

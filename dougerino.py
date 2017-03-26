@@ -213,6 +213,34 @@ def printlines(filename, numlines=1): #--------------------------------------<<<
         for _ in range(0, numlines):
             print(fhandle.readline().strip())
 
+def progressbar(progress, bar_length=50, done_char='=', todo_char='-'): #----<<<
+    """Display progress bar showing completion status.
+
+    1st parameter = current progress, as a value between 0 and 1.
+    bar_length = # characters in the progress bar
+    done_char = the character to display for the portion completed
+    todo_char = the character to display for the portion remaining
+    """
+    # build the display string
+    done = int(bar_length*progress)
+    todo = bar_length - done
+    if done == 0:
+        displaystr = '[' + bar_length*todo_char  + ']'
+    elif done == bar_length:
+        displaystr = '[' + bar_length*done_char  + ']'
+    else:
+        displaystr = '[' + (done-1)*done_char + '>' + todo*todo_char  + ']'
+
+    # we only allow for increasing % done, so when it gets to 100% add a
+    # newline ...
+    if displaystr == '[' + bar_length*done_char + ']':
+        displaystr += '\n'
+
+    # update displayed progress
+    if progressbar.lastdisplay != displaystr:
+        print('\r' + displaystr, end='')
+        progressbar.lastdisplay = displaystr
+
 def setting(topic, section, key): #------------------------------------------<<<
     """Retrieve a private setting stored in a local .ini file.
 
@@ -297,4 +325,10 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
-    pass # to do - unit tests
+    # to do - unit tests
+    print('Example of using progressbar() function ...')
+    progressbar.lastdisplay = ''
+    for progress_value in range(100):
+        progressbar(progress_value/100, bar_length=80, done_char='#')
+        time.sleep(.02)
+    progressbar(1, bar_length=80, done_char='#') # when value is 1, printed string ends with \n
