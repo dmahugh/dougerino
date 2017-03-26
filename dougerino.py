@@ -6,6 +6,7 @@ changes/additions here and they're immediately available in other projects.
 import configparser
 import csv
 import datetime
+import hashlib
 import json
 import os
 import time
@@ -119,6 +120,11 @@ def filesize(filename): #----------------------------------------------------<<<
     """Return byte size of specified file.
     """
     return os.stat(filename).st_size
+
+def hashkey(string): #-------------------------------------------------------<<<
+    """Return MD5 hex digest for the UTF-8 encoding of a string value.
+    """
+    return hashlib.md5(string.encode('utf-8')).hexdigest()
 
 def setting(topic=None, section=None, key=None): #---------------------------<<<
     """Retrieve a private setting stored in a local .ini file.
