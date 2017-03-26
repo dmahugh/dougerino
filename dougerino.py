@@ -3,6 +3,8 @@
 Typically we install this with "pip install --editable ." and then can make
 changes/additions here and they're immediately available in other projects.
 """
+import configparser
+import datetime
 import os
 
 def bytecount(numbytes=0): #-------------------------------------------------<<<
@@ -54,10 +56,35 @@ class ChangeDirectory: #-----------------------------------------------------<<<
         return '<' + (self.__class__.__name__ + ' object, new_path = ' +
                       self.new_path + '>')
 
+def days_since(datestr): #---------------------------------------------------<<<
+    """Return # days since a date in YYYY-MM-DD format.
+    """
+    return (datetime.datetime.today() -
+            datetime.datetime.strptime(datestr, '%Y-%m-%d')).days
+
 def filesize(filename): #----------------------------------------------------<<<
     """Return byte size of specified file.
     """
     return os.stat(filename).st_size
+
+def setting(topic=None, section=None, key=None): #---------------------------<<<
+    """Retrieve a private setting stored in a local .ini file.
+
+    topic = name of the ini file; e.g., 'azure' for azure.ini
+    section = section within the .ini file
+    key = name of the key within the section
+
+    Returns the value if found, None otherwise.
+    """
+    source_folder = os.path.dirname(os.path.realpath(__file__))
+    inifile = os.path.join(source_folder, '../_private/' + topic.lower() + '.ini')
+    config = configparser.ConfigParser()
+    config.read(inifile)
+    try:
+        retval = config.get(section, key)
+    except configparser.NoSectionError:
+        retval = None
+    return retval
 
 if __name__ == "__main__":
     # to do - unit tests
