@@ -188,6 +188,56 @@ def days_since(datestr): #---------------------------------------------------<<<
     return (datetime.datetime.today() -
             datetime.datetime.strptime(datestr, '%Y-%m-%d')).days
 
+def dicts2csv(listobj, filename): #------------------------------------------<<<
+    """Write list of dictionaries to a CSV file.
+
+    1st parameter = the list of dictionaries
+    2nd parameter = name of CSV file to be written
+    """
+    csvfile = open(filename, 'w', newline='')
+
+    # note that we assume all dictionaries in the list have the same keys
+    csvwriter = csv.writer(csvfile, dialect='excel')
+    header_row = [key for key, _ in listobj[0].items()]
+    csvwriter.writerow(header_row)
+
+    for row in listobj:
+        values = []
+        for fldname in header_row:
+            values.append(row[fldname])
+        csvwriter.writerow(values)
+
+    csvfile.close()
+
+def dicts2json(source=None, filename=None): #--------------------------------<<<
+    """Write list of dictionaries to a JSON file.
+
+    source = the list of dictionaries
+    filename = the filename (will be over-written if it already exists)
+    <internal>
+    """
+    if not source or not filename:
+        return # nothing to do
+
+    with open(filename, 'w') as fhandle:
+        fhandle.write(json.dumps(source, indent=4, sort_keys=True))
+
+def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
+    """Calculate difference in years.
+
+    fromdate = starting date (e.g., date of birth); 'm/d/y' or date object
+    todate = ending date; 'm/d/y' or date object
+
+    Returns the difference as an integer number of years.
+    """
+    start = datetime.datetime.strptime(fromdate, '%m/%d/%Y') \
+        if isinstance(fromdate, str) else fromdate
+    end = datetime.datetime.strptime(todate, '%m/%d/%Y') \
+        if isinstance(todate, str) else todate
+    # note that this is based on False=0/True=1 for the < comparison ...
+    return end.year - start.year - \
+        ((end.month, end.day) < (start.month, start.day))
+
 def filesize(filename): #----------------------------------------------------<<<
     """Return byte size of specified file.
     """
@@ -272,56 +322,6 @@ def time_stamp(filename=None): #---------------------------------------------<<<
         return time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(unixtime))
     else:
         return time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(time.time()))
-
-def write_csv(listobj, filename): #------------------------------------------<<<
-    """Write list of dictionaries to a CSV file.
-
-    1st parameter = the list of dictionaries
-    2nd parameter = name of CSV file to be written
-    """
-    csvfile = open(filename, 'w', newline='')
-
-    # note that we assume all dictionaries in the list have the same keys
-    csvwriter = csv.writer(csvfile, dialect='excel')
-    header_row = [key for key, _ in listobj[0].items()]
-    csvwriter.writerow(header_row)
-
-    for row in listobj:
-        values = []
-        for fldname in header_row:
-            values.append(row[fldname])
-        csvwriter.writerow(values)
-
-    csvfile.close()
-
-def write_json(source=None, filename=None): #--------------------------------<<<
-    """Write list of dictionaries to a JSON file.
-
-    source = the list of dictionaries
-    filename = the filename (will be over-written if it already exists)
-    <internal>
-    """
-    if not source or not filename:
-        return # nothing to do
-
-    with open(filename, 'w') as fhandle:
-        fhandle.write(json.dumps(source, indent=4, sort_keys=True))
-
-def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
-    """Calculate difference in years.
-
-    fromdate = starting date (e.g., date of birth); 'm/d/y' or date object
-    todate = ending date; 'm/d/y' or date object
-
-    Returns the difference as an integer number of years.
-    """
-    start = datetime.datetime.strptime(fromdate, '%m/%d/%Y') \
-        if isinstance(fromdate, str) else fromdate
-    end = datetime.datetime.strptime(todate, '%m/%d/%Y') \
-        if isinstance(todate, str) else todate
-    # note that this is based on False=0/True=1 for the < comparison ...
-    return end.year - start.year - \
-        ((end.month, end.day) < (start.month, start.day))
 
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
