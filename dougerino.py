@@ -4,6 +4,7 @@ Typically we install this with "pip install --editable ." and then can make
 changes/additions here and they're immediately available in other projects.
 """
 import configparser
+import csv
 import datetime
 import os
 
@@ -85,6 +86,27 @@ def setting(topic=None, section=None, key=None): #---------------------------<<<
     except configparser.NoSectionError:
         retval = None
     return retval
+
+def write_csv(listobj, filename): #------------------------------------------<<<
+    """Write list of dictionaries to a CSV file.
+
+    1st parameter = the list of dictionaries
+    2nd parameter = name of CSV file to be written
+    """
+    csvfile = open(filename, 'w', newline='')
+
+    # note that we assume all dictionaries in the list have the same keys
+    csvwriter = csv.writer(csvfile, dialect='excel')
+    header_row = [key for key, _ in listobj[0].items()]
+    csvwriter.writerow(header_row)
+
+    for row in listobj:
+        values = []
+        for fldname in header_row:
+            values.append(row[fldname])
+        csvwriter.writerow(values)
+
+    csvfile.close()
 
 if __name__ == "__main__":
     # to do - unit tests
