@@ -128,15 +128,18 @@ Returns a comma-delimited string containing specified values from a list.
 
 ## percent
     
-///
+Returns percentage for specified value and total.
 
 ## printlines
 
-///
+Arguments: filename, numlines (default=1)
+
+Prints to the console the specified number of lines of a text file. Commonly
+used for quickly peeking at the beginning of a very large CSV file.
 
 ## progressbar
 
-///
+Display on the console a text-based progress bar showing completion status.
 
 ```python
 print('Example of using progressbar() function ...')
@@ -149,12 +152,27 @@ progressbar(1, bar_length=80, done_char='#') # 1 = 100% finished
 
 ## setting
 
-///
+Arguments: topic, section, key
+
+Confidential information such as access tokens and passwords is stored in
+topic-based INI files in the ```..\_private``` folder, to avoid any risk
+of committing this information to GitHub. This function is used to retrieve
+those values. Topic is the name of the INI file (not including the .ini
+extension), section refers to a section within the INI file, and key is
+the name of the desired value within the section.
 
 ## time_stamp
 
-///
+Returns a timestamp string for a specified file, or for the current
+date/time if no file specified.
+
+![time_stamp() example](images/time_stamp.png)
 
 ## yeardiff
 
-///
+Arguments: fromdate, todate
+
+Returns the difference in years between two dates. Arguments can be
+date/datetime objects or strings in month/day/year format.
+
+![yeardiff() example](images/yeardiff.png)
