@@ -2,25 +2,24 @@
 Library of functions for common Python development tasks.
 
 * [bytecount](#bytecount)
-* [cdow](cdow)
-* [ChangeDirectory](ChangeDirectory)
-* [cls](cls)
-* [column_values](column_values)
-def csv2dict(filename, key_column, val_column, lower=True, header=True): #---<<<
-def csv2list(filename, column, lower=True, header=True, dedupe=True): #------<<<
-def csvfields(values, columns): #--------------------------------------------<<<
-def days_since(datestr): #---------------------------------------------------<<<
-def dicts2csv(listobj, filename): #------------------------------------------<<<
-def dicts2json(source=None, filename=None): #--------------------------------<<<
-def filesize(filename): #----------------------------------------------------<<<
-def hashkey(string): #-------------------------------------------------------<<<
-def percent(count, total): #-------------------------------------------------<<<
-def printlines(filename, numlines=1): #--------------------------------------<<<
-def progressbar(progress, bar_length=50, done_char='=', todo_char='-'): #----<<<
-def setting(topic, section, key): #------------------------------------------<<<
-def time_stamp(filename=None): #---------------------------------------------<<<
-def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
-
+* [cdow](#cdow)
+* [ChangeDirectory](#ChangeDirectory)
+* [cls](#cls)
+* [column_values](#column_values)
+# [csv2dict](#csv2dict)
+# [csv2list](#csv2list)
+# [csvfields](#csvfields)
+# [days_since](#days_since)
+# [dicts2csv](#dicts2csv)
+# [dicts2json](#dicts2json)
+# [filesize](#filesize)
+# [hashkey](#hashkey)
+# [percent](#percent)
+# [printlines](#printlines)
+# [progressbar](#progressbar)
+# [setting](#setting)
+# [time_stamp](#time_stamp)
+# [yeardiff](#yeardiff)
 
 ## bytecount
 
@@ -48,23 +47,58 @@ with ChangeDirectory(folder):
 
 ///
 
-## csv2dict(filename, key_column, val_column, lower=True, header=True)
+## csv2dict
 
 ///
 
-## csv2list(filename, column, lower=True, header=True, dedupe=True)
+## csv2list
 
 ///
 
-## csvfields(values, columns): #--------------------------------------------<<<
-## days_since(datestr): #---------------------------------------------------<<<
-## dicts2csv(listobj, filename): #------------------------------------------<<<
-## dicts2json(source=None, filename=None): #--------------------------------<<<
-## filesize(filename): #----------------------------------------------------<<<
-## hashkey(string): #-------------------------------------------------------<<<
-## percent(count, total): #-------------------------------------------------<<<
-## printlines(filename, numlines=1): #--------------------------------------<<<
-## progressbar(progress, bar_length=50, done_char='=', todo_char='-'): #----<<<
-## setting(topic, section, key): #------------------------------------------<<<
-## time_stamp(filename=None): #---------------------------------------------<<<
-## yeardiff(fromdate=None, todate=None): #----------------------------------<<<
+## csvfields
+
+///
+
+## days_since
+
+///
+
+## dicts2csv
+
+///
+
+## dicts2json
+
+///
+
+## filesize
+
+///
+
+## hashkey
+
+///
+
+## percent
+    
+///
+
+## printlines
+
+///
+
+## progressbar
+
+///
+
+## setting
+
+///
+
+## time_stamp
+
+///
+
+## yeardiff
+
+///
