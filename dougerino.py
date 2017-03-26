@@ -84,14 +84,15 @@ def column_values(infile, column, outfile): #--------------------------------<<<
 
     infile = a CSV file; must have a header row
     column = a column number or name
-    outfile = output file to be written
+    outfile = output file to be written (optional)
 
     the output file contains each unique value found in the specified column,
     sorted alphabetically. Each line contains the value twice, separated by
     a comma. The second value is typically manually edited to create a shorter
     version for reports, and the lines may be re-arranged to specify the order
-    these values should appear in reports. See race_abbrev() and race_sort() for
-    examples of how this data can be used.
+    these values should appear in reports.
+    See election-data project's race_abbrev() and race_sort() for examples of
+    how this data can be used.
     """
     colnames = open(infile, 'r').readline().strip().split(',')
     if isinstance(column, int):
@@ -113,6 +114,10 @@ def column_values(infile, column, outfile): #--------------------------------<<<
 
     for value in sorted(value_list):
         print(value + ',' + value)
+    if outfile:
+        with open(outfile, 'w') as fhandle:
+            for value in sorted(value_list):
+                fhandle.write(value + ',' + value + '\n')
 
 def csv2dict(filename, key_column, val_column, lower=True, header=True): #---<<<
     """
@@ -222,22 +227,6 @@ def dicts2json(source=None, filename=None): #--------------------------------<<<
     with open(filename, 'w') as fhandle:
         fhandle.write(json.dumps(source, indent=4, sort_keys=True))
 
-def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
-    """Calculate difference in years.
-
-    fromdate = starting date (e.g., date of birth); 'm/d/y' or date object
-    todate = ending date; 'm/d/y' or date object
-
-    Returns the difference as an integer number of years.
-    """
-    start = datetime.datetime.strptime(fromdate, '%m/%d/%Y') \
-        if isinstance(fromdate, str) else fromdate
-    end = datetime.datetime.strptime(todate, '%m/%d/%Y') \
-        if isinstance(todate, str) else todate
-    # note that this is based on False=0/True=1 for the < comparison ...
-    return end.year - start.year - \
-        ((end.month, end.day) < (start.month, start.day))
-
 def filesize(filename): #----------------------------------------------------<<<
     """Return byte size of specified file.
     """
@@ -322,6 +311,22 @@ def time_stamp(filename=None): #---------------------------------------------<<<
         return time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(unixtime))
     else:
         return time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(time.time()))
+
+def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
+    """Calculate difference in years.
+
+    fromdate = starting date (e.g., date of birth); 'm/d/y' or date object
+    todate = ending date; 'm/d/y' or date object
+
+    Returns the difference as an integer number of years.
+    """
+    start = datetime.datetime.strptime(fromdate, '%m/%d/%Y') \
+        if isinstance(fromdate, str) else fromdate
+    end = datetime.datetime.strptime(todate, '%m/%d/%Y') \
+        if isinstance(todate, str) else todate
+    # note that this is based on False=0/True=1 for the < comparison ...
+    return end.year - start.year - \
+        ((end.month, end.day) < (start.month, start.day))
 
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
