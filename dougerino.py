@@ -145,6 +145,18 @@ def csv2dict(filename, key_column, val_column, lower=True, header=True): #---<<<
             thedict[key_val] = val_val
     return thedict
 
+def csv2json(csvdata, header=True): #----------------------------------------<<<
+    """Convert CSV data to JSON.
+
+    csvdata = string containing a CSV file
+              e.g., open('filename.csv').read()
+    header = whether the data contains a header row (if not, output fields
+             are named 'field1' etc.)
+
+    Returns a string of the JSON version of the CSV data.
+    """
+    #/// implement
+
 def csv2list(filename, column, lower=True, header=True, dedupe=True): #------<<<
     """
     Create a list from a column in a CSV file.
@@ -221,6 +233,28 @@ def hashkey(string): #-------------------------------------------------------<<<
     """Return MD5 hex digest for the UTF-8 encoding of a string value.
     """
     return hashlib.md5(string.encode('utf-8')).hexdigest()
+
+def json2csv(jsondata, header=True): #----------------------------------------<<<
+    """Convert JSON data to CSV.
+
+    jsondata = string containing a JSON document
+               e.g., open('filename.json').read()
+    header = whether to output a CSV header row of field names
+
+    Returns a string of the CSV version of the JSON data.
+    """
+    jsondoc = json.loads(jsondata)
+    if not jsondoc:
+        return '' # no JSON data found
+
+    fldnames = sorted([field for field in jsondoc[0]])
+    csvdata = ','.join(fldnames) + '\n' if header else ''
+
+    for row in jsondoc:
+        values = [row[fldname] for fldname in fldnames]
+        csvdata += ','.join(values) + '\n'
+
+    return csvdata
 
 def list_projection(values, columns): #--------------------------------------<<<
     """Return specified set of fields/columns from a line of a CSV file.
@@ -331,9 +365,12 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
     # to do - unit tests
-    print('Example of using progressbar() function ...')
-    progressbar.lastdisplay = ''
-    for progress_value in range(100):
-        progressbar(progress_value/100, bar_length=80, done_char='#')
-        time.sleep(.02)
-    progressbar(1, bar_length=80, done_char='#') # when value is 1, printed string ends with \n
+
+    jsondata = open('test.json', 'r').read()
+    #print(jsondata)
+    converted = json2csv(jsondata)
+    print('>>>>>>>>>>>> json2csv() output:')
+    print(converted)
+
+    #csvdata = open('test.csv', 'r').read()
+    #print(csvdata)

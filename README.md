@@ -13,6 +13,7 @@ Library of functions for common Python development tasks.
 * [dicts2json](#dicts2json)
 * [filesize](#filesize)
 * [hashkey](#hashkey)
+* [json2csv](#json2csv)
 * [list_projection](#list_projection)
 * [percent](#percent)
 * [printlines](#printlines)
@@ -78,6 +79,10 @@ with ChangeDirectory(folder):
 ///
 
 ## hashkey
+
+///
+
+## json2csv
 
 ///
 
