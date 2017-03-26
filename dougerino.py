@@ -1,13 +1,11 @@
 """General-purpose functions and classes.
 
-bytecount() ------> convert byte count to display string as bytes, KB, MB or GB
-cls() ------------> clear screen (cross-platform)
-ChangeDirectory --> context manager class for changing working directory
+Typically we install this with "pip install --editable ." and then can make
+changes/additions here and they're immediately available in other projects.
 """
 import os
 
-#------------------------------------------------------------------------------
-def bytecount(numbytes=0):
+def bytecount(numbytes=0): #-------------------------------------------------<<<
     """Convert byte count to display string as bytes, KB, MB or GB.
 
     1st parameter = # bytes (may be negative)
@@ -29,15 +27,13 @@ def bytecount(numbytes=0):
         retval = retval + format(absvalue/(1024*1024*1024),',.1f') + ' GB'
     return retval
 
-#------------------------------------------------------------------------------
-def cls():
+def cls(): #-----------------------------------------------------------------<<<
     if os.name == 'nt':
         _ = os.system('cls')
     else:
         _ = os.system('clear')
 
-#------------------------------------------------------------------------------
-class ChangeDirectory:
+class ChangeDirectory: #-----------------------------------------------------<<<
     """Context manager for changing current working directory.
 
     with ChangeDirectory(folder):
@@ -55,7 +51,11 @@ class ChangeDirectory:
         return '<' + (self.__class__.__name__ + ' object, newPath = ' +
         self.newPath + '>')
 
-#------------------------------------------------------------------------------
+def filesize(filename): #----------------------------------------------------<<<
+    """Return byte size of specified file.
+    """
+    return os.stat(filename).st_size
+
 if __name__ == "__main__":
-    # TO DO - unit tests for dougerino module.
+    # to do - unit tests
     pass

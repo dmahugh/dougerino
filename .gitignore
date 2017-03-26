@@ -6,6 +6,7 @@ _todo.txt
 *.csv
 *.txt
 temp.*
+Dougerino.egg-info/
 
 # don't include these subfolders
 __pycache__/
