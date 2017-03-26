@@ -26,10 +26,10 @@ Library of functions for common Python development tasks.
 Function for concise display of approximate numeric values. Examples:
 
 ```
-bytecount(123) = 123 bytes
-bytecount(5280) = 5.2 KB
-bytecount(12345678) = 11.8 MB
-bytecount(12345678901) = 11.5 GB
+bytecount(123) -----------> 123 bytes
+bytecount(5280) ----------> 5.2 KB
+bytecount(12345678) ------> 11.8 MB
+bytecount(12345678901) ---> 11.5 GB
 ```
 
 ## cdow
@@ -96,6 +96,15 @@ with ChangeDirectory(folder):
 ## progressbar
 
 ///
+
+```python
+print('Example of using progressbar() function ...')
+progressbar.lastdisplay = ''
+for progress_value in range(100):
+    progressbar(progress_value/100, bar_length=80, done_char='#')
+    time.sleep(.02)
+progressbar(1, bar_length=80, done_char='#') # 1 = 100% finished
+```
 
 ## setting
 
