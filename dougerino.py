@@ -126,6 +126,21 @@ def hashkey(string): #-------------------------------------------------------<<<
     """
     return hashlib.md5(string.encode('utf-8')).hexdigest()
 
+def percent(count, total): #-------------------------------------------------<<<
+    """Return a percent value, or 0 if undefined.
+    Arguments may float, int, or str.
+    """
+    if not count or not total:
+        return 0
+    return 100 * float(count) / float(total)
+
+def printlines(filename=None, numlines=1): #---------------------------------<<<
+    """Print the first X lines of a text file (default = 1 line).
+    """
+    with open(filename, 'r') as fhandle:
+        for _ in range(0, numlines):
+            print(fhandle.readline().strip())
+
 def setting(topic=None, section=None, key=None): #---------------------------<<<
     """Retrieve a private setting stored in a local .ini file.
 
@@ -191,6 +206,22 @@ def write_json(source=None, filename=None): #--------------------------------<<<
 
     with open(filename, 'w') as fhandle:
         fhandle.write(json.dumps(source, indent=4, sort_keys=True))
+
+def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
+    """Calculate difference in years.
+
+    fromdate = starting date (e.g., date of birth); 'm/d/y' or date object
+    todate = ending date; 'm/d/y' or date object
+
+    Returns the difference as an integer number of years.
+    """
+    start = datetime.strptime(fromdate, '%m/%d/%Y') \
+        if isinstance(fromdate, str) else fromdate
+    end = datetime.strptime(todate, '%m/%d/%Y') \
+        if isinstance(todate, str) else todate
+    # note that this is based on False=0/True=1 for the < comparison ...
+    return end.year - start.year - \
+        ((end.month, end.day) < (start.month, start.day))
 
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
