@@ -166,7 +166,7 @@ the name of the desired value within the section.
 Returns a timestamp string for a specified file, or for the current
 date/time if no file specified.
 
-![time_stamp() example](images/time_stamp.png)
+![time_stamp() example](images/example-time_stamp.png)
 
 ## yeardiff
 
@@ -175,4 +175,4 @@ Arguments: fromdate, todate
 Returns the difference in years between two dates. Arguments can be
 date/datetime objects or strings in month/day/year format.
 
-![yeardiff() example](images/yeardiff.png)
+![yeardiff() example](images/example-yeardiff.png)
