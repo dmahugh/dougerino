@@ -215,9 +215,9 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 
     Returns the difference as an integer number of years.
     """
-    start = datetime.strptime(fromdate, '%m/%d/%Y') \
+    start = datetime.datetime.strptime(fromdate, '%m/%d/%Y') \
         if isinstance(fromdate, str) else fromdate
-    end = datetime.strptime(todate, '%m/%d/%Y') \
+    end = datetime.datetime.strptime(todate, '%m/%d/%Y') \
         if isinstance(todate, str) else todate
     # note that this is based on False=0/True=1 for the < comparison ...
     return end.year - start.year - \
@@ -226,4 +226,4 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
     # to do - unit tests
-    pass
+    print(yeardiff('11/14/2009', '3/25/2017'))
