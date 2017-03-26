@@ -6,6 +6,7 @@ changes/additions here and they're immediately available in other projects.
 import configparser
 import csv
 import datetime
+import json
 import os
 
 def bytecount(numbytes=0): #-------------------------------------------------<<<
@@ -108,6 +109,20 @@ def write_csv(listobj, filename): #------------------------------------------<<<
 
     csvfile.close()
 
+def write_json(source=None, filename=None): #--------------------------------<<<
+    """Write list of dictionaries to a JSON file.
+
+    source = the list of dictionaries
+    filename = the filename (will be over-written if it already exists)
+    <internal>
+    """
+    if not source or not filename:
+        return # nothing to do
+
+    with open(filename, 'w') as fhandle:
+        fhandle.write(json.dumps(source, indent=4, sort_keys=True))
+
+#-------------------------------------------------------------------------------
 if __name__ == "__main__":
     # to do - unit tests
     pass
