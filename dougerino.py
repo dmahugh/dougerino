@@ -8,6 +8,7 @@ import csv
 import datetime
 import json
 import os
+import time
 
 def bytecount(numbytes=0): #-------------------------------------------------<<<
     """Convert byte count to display string as bytes, KB, MB or GB.
@@ -87,6 +88,19 @@ def setting(topic=None, section=None, key=None): #---------------------------<<<
     except configparser.NoSectionError:
         retval = None
     return retval
+
+def timestamp(filename=None): #----------------------------------------------<<<
+    """Return timestamp as a string.
+
+    filename = optional file, if passed then timestamp is returned for the file
+
+    Otherwise, returns current timestamp.
+    """
+    if filename:
+        unixtime = os.path.getmtime(filename)
+        return time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(unixtime))
+    else:
+        return time.strftime('%m/%d/%Y %H:%M:%S', time.localtime(time.time()))
 
 def write_csv(listobj, filename): #------------------------------------------<<<
     """Write list of dictionaries to a CSV file.
