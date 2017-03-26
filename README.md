@@ -35,7 +35,9 @@ bytecount(12345678901) ---> 11.5 GB
 
 ## cdow
 
-///
+Returns a weekday name, arguments can be a date, datetime, or year/month/day.
+
+![cdow() examples](images/example-cdow.png)
 
 ## ChangeDirectory
 

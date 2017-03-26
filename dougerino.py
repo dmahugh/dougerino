@@ -390,12 +390,10 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
-    # to do - unit tests
+    pass # to do - unit tests
 
-    csvdata = open('test.csv', 'r').read()
-    converted = csv2json(csvdata, header=True)
-    print('>>>>>>>>>>>> csv2json() output:')
-    for row in converted:
-        print(str(row))
-    #jsondoc = json.loads(converted)
-    #print(str(jsondoc))
+    #csvdata = open('test.csv', 'r').read()
+    #converted = csv2json(csvdata, header=True)
+    #print('>>>>>>>>>>>> csv2json() output:')
+    #for row in converted:
+    #    print(str(row))
