@@ -32,14 +32,6 @@ def bytecount(numbytes=0): #-------------------------------------------------<<<
         retval = retval + format(absvalue/(1024*1024*1024), ',.1f') + ' GB'
     return retval
 
-def cls(): #-----------------------------------------------------------------<<<
-    """Cross-platform clear-screen command for console apps.
-    """
-    if os.name == 'nt':
-        _ = os.system('cls')
-    else:
-        _ = os.system('clear')
-
 class ChangeDirectory: #-----------------------------------------------------<<<
     """Context manager for changing current working directory.
 
@@ -58,6 +50,49 @@ class ChangeDirectory: #-----------------------------------------------------<<<
     def __repr__(self):
         return '<' + (self.__class__.__name__ + ' object, new_path = ' +
                       self.new_path + '>')
+
+def cls(): #-----------------------------------------------------------------<<<
+    """Cross-platform clear-screen command for console apps.
+    """
+    if os.name == 'nt':
+        _ = os.system('cls')
+    else:
+        _ = os.system('clear')
+
+def column_values(infile, column, outfile): #--------------------------------<<<
+    """Generate a summary of unique values for a column/field.
+
+    infile = a CSV file; must have a header row
+    column = a column number or name
+    outfile = output file to be written
+
+    the output file contains each unique value found in the specified column,
+    sorted alphabetically. Each line contains the value twice, separated by
+    a comma. The second value is typically manually edited to create a shorter
+    version for reports, and the lines may be re-arranged to specify the order
+    these values should appear in reports. See race_abbrev() and race_sort() for
+    examples of how this data can be used.
+    """
+    colnames = open(infile, 'r').readline().strip().split(',')
+    if isinstance(column, int):
+        colno = column
+        colname = colnames[colno]
+    else:
+        colname = column
+        colno = 0 # default if not found in CSV header
+        for fieldno, fieldname in enumerate(colnames):
+            if fieldname.lower() == colname.lower():
+                colno = fieldno
+                break
+
+    myreader = csv.reader(open(infile, 'r'), delimiter=',', quotechar='"')
+    next(myreader, None) # skip header
+    value_list = set()
+    for values in myreader:
+        value_list.add(values[colno])
+
+    for value in sorted(value_list):
+        print(value + ',' + value)
 
 def days_since(datestr): #---------------------------------------------------<<<
     """Return # days since a date in YYYY-MM-DD format.
