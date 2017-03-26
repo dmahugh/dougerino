@@ -146,16 +146,42 @@ def csv2dict(filename, key_column, val_column, lower=True, header=True): #---<<<
     return thedict
 
 def csv2json(csvdata, header=True): #----------------------------------------<<<
-    """Convert CSV data to JSON.
+    """Convert CSV data to JSON (i.e., list of dictionaries).
 
     csvdata = string containing a CSV file
               e.g., open('filename.csv').read()
     header = whether the data contains a header row (if not, output fields
-             are named 'field1' etc.)
+             are named 'field0,field1,etc')
 
-    Returns a string of the JSON version of the CSV data.
+    Returns a list of dictionaries, with each dictionary corresponding to a row
+    of data from the CSV data.
     """
-    #/// implement
+    if not csvdata:
+        return '' # no CSV data found
+
+    row1 = csvdata.split('\n')[0]
+
+    if header:
+        fldnames = row1.split(',') # get field names from CSV header
+    else:
+        # no CSV header included, so make up field names
+        fldnames = ['field' + str(fieldno) for fieldno, _ in enumerate(row1.split(','))]
+
+    jsondata = []
+    firstline = True
+    for row in csvdata.split('\n'):
+        if not row:
+            continue # skip blank lines
+        if firstline and header:
+            firstline = False
+            continue
+        values = row.split(',')
+        rowdict = dict()
+        for fieldno, fldname in enumerate(fldnames):
+            rowdict[fldname] = values[fieldno]
+        jsondata.append(rowdict)
+
+    return jsondata
 
 def csv2list(filename, column, lower=True, header=True, dedupe=True): #------<<<
     """
@@ -366,11 +392,10 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 if __name__ == "__main__":
     # to do - unit tests
 
-    jsondata = open('test.json', 'r').read()
-    #print(jsondata)
-    converted = json2csv(jsondata)
-    print('>>>>>>>>>>>> json2csv() output:')
-    print(converted)
-
-    #csvdata = open('test.csv', 'r').read()
-    #print(csvdata)
+    csvdata = open('test.csv', 'r').read()
+    converted = csv2json(csvdata, header=True)
+    print('>>>>>>>>>>>> csv2json() output:')
+    for row in converted:
+        print(str(row))
+    #jsondoc = json.loads(converted)
+    #print(str(jsondoc))
