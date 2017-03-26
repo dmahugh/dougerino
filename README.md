@@ -2,9 +2,9 @@
 Library of functions for common Python development tasks.
 
 * [bytecount](#bytecount)
-* [cdow](cdow))
-* [ChangeDirectory class](ChangeDirectory class)
-* [cls()](cls())
+* [cdow](cdow)
+* [ChangeDirectory](ChangeDirectory)
+* [cls](cls)
 * [column_values](column_values)
 def csv2dict(filename, key_column, val_column, lower=True, header=True): #---<<<
 def csv2list(filename, column, lower=True, header=True, dedupe=True): #------<<<
