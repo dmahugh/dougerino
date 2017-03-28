@@ -249,6 +249,43 @@ def filesize(filename): #----------------------------------------------------<<<
     """
     return os.stat(filename).st_size
 
+def github_pagination(link_header): #----------------------------------------<<<
+    """Parse values from the 'link' HTTP header returned by GitHub API.
+
+    1st parameter = either of these options ...
+                    - 'link' HTTP header passed as a string
+                    - response object returned by requests library
+
+    Returns a dictionary with entries for the URLs and page numbers parsed
+    from the link string: firstURL, firstpage, prevURL, prevpage, nextURL,
+    nextpage, lastURL, lastpage.
+    <internal>
+    """
+    # initialize the dictionary
+    retval = {'firstpage':0, 'firstURL':None, 'prevpage':0, 'prevURL':None,
+              'nextpage':0, 'nextURL':None, 'lastpage':0, 'lastURL':None}
+
+    if isinstance(link_header, str):
+        link_string = link_header
+    else:
+        # link_header is a response object, get its 'link' HTTP header
+        try:
+            link_string = link_header.headers['Link']
+        except KeyError:
+            return retval # no Link HTTP header found, nothing to parse
+
+    links = link_string.split(',')
+    for link in links:
+        # link format = '<url>; rel="type"'
+        linktype = link.split(';')[-1].split('=')[-1].strip()[1:-1]
+        url = link.split(';')[0].strip()[1:-1]
+        pageno = url.split('?')[-1].split('=')[-1].strip()
+
+        retval[linktype + 'page'] = pageno
+        retval[linktype + 'URL'] = url
+
+    return retval
+
 def hashkey(string, encoding='utf-8'): #-------------------------------------<<<
     """Return MD5 hex digest for a string value.
 
