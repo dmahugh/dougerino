@@ -251,6 +251,47 @@ def filesize(filename): #----------------------------------------------------<<<
     """
     return os.stat(filename).st_size
 
+def github_allpages(endpoint=None, auth=None, #------------------------------<<<
+                    headers=None, state=None, session=None):
+
+    """Get data from GitHub REST API.
+
+    endpoint     = HTTP endpoint for GitHub API call
+    headers      = HTTP headers to be included with API call
+
+    Returns the data as a list of dictionaries. Pagination is handled by this
+    function, so the complete data set is returned.
+    """
+    headers = {} if not headers else headers
+
+    payload = [] # the full data set (all fields, all pages)
+    page_endpoint = endpoint # endpoint of each page in the loop below
+
+    while True:
+        response = github_rest_api(endpoint=page_endpoint, auth=auth, \
+            headers=headers, state=state, session=session)
+        if (state and state.verbose) or response.status_code != 200:
+            # note that status code is always displayed if not 200/OK
+            print('      Status: {0}, {1} bytes returned'. \
+                format(response, len(response.text)))
+        if response.ok:
+            thispage = json.loads(response.text)
+            # commit data is handled differently from everything else, because
+            # the sheer volume (e.g., over 100K commits in a repo) causes out of
+            # memory errors if all fields are returned.
+            if 'commit' in endpoint:
+                minimized = [_['commit'] for _ in thispage]
+                payload.extend(minimized)
+            else:
+                payload.extend(thispage)
+
+        pagelinks = github_pagination(response)
+        page_endpoint = pagelinks['nextURL']
+        if not page_endpoint:
+            break # no more results to process
+
+    return payload
+
 def github_pagination(link_header): #----------------------------------------<<<
     """Parse values from the 'link' HTTP header returned by GitHub API.
 
@@ -513,17 +554,3 @@ def yeardiff(fromdate=None, todate=None): #----------------------------------<<<
 #-------------------------------------------------------------------------------
 if __name__ == "__main__":
     pass # to do - unit tests
-
-
-    # test new github_rest_api()
-    USERNAME = 'dmahugh'
-    PAT = setting('github', USERNAME, 'pat')
-    print(USERNAME, PAT)
-    ENDPOINT = '/repos/dmahugh/gitdata/commits'
-    RESPONSE = github_rest_api(endpoint=ENDPOINT, auth=(USERNAME, PAT), headers={})
-    JSONDATA = json.loads(RESPONSE.text)
-    for commit in JSONDATA:
-        message = commit['commit']['message']
-        login = commit['author']['login']
-        thedate = commit['commit']['committer']['date']
-        print(thedate, login, message)
