@@ -13,7 +13,9 @@ Library of functions for common Python development tasks.
 * [dicts2csv](#dicts2csv)
 * [dicts2json](#dicts2json)
 * [filesize](#filesize)
+* [github_allpages](#github_allpages)
 * [github_pagination](#github_pagination)
+* [github_rest_api](#github_rest_api)
 * [hashkey](#hashkey)
 * [json2csv](#json2csv)
 * [list_projection](#list_projection)
@@ -108,6 +110,11 @@ JSON file.
 
 Returns byte size for a specified filename. (Wrapper around os.stat().st_size.)
 
+## github_allpages
+
+Retrieves data from the GitHub V3 REST API, and handles pagination so that all
+instances of the requested entity type are returned in a single list of dictionaries.
+
 ## github_pagination
 
 This function parses the 'link' HTTP header returned by the GitHub V3 REST API,
@@ -132,6 +139,10 @@ And here is the dictionary returned by github_pagination() for that header:
     'nextURL': 'https://api.github.com/organizations/6154722/repos?page=2',
 }
 ```
+
+## github_rest_api
+
+Wrapper function for querying the GitHub V3 REST APIs.
 
 ## hashkey
 
