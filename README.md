@@ -152,14 +152,14 @@ And here is the dictionary returned by github_pagination() for that header:
 
 ```JSON
 {
-    'firstpage': 0,
-    'firstURL': None,
-    'lastpage': '98',
-    'lastURL': 'https://api.github.com/organizations/6154722/repos?page=98',
-    'prevpage': 0,
-    'prevURL': None,
-    'nextpage': '2',
-    'nextURL': 'https://api.github.com/organizations/6154722/repos?page=2',
+    "firstpage": 0,
+    "firstURL": None,
+    "lastpage": "98",
+    "lastURL": "https://api.github.com/organizations/6154722/repos?page=98",
+    "prevpage": 0,
+    "prevURL": None,
+    "nextpage": "2",
+    "nextURL": "https://api.github.com/organizations/6154722/repos?page=2",
 }
 ```
 
