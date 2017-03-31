@@ -15,6 +15,28 @@ import time
 
 import requests
 
+from azure.common.credentials import ServicePrincipalCredentials
+from azure.mgmt.datalake.store import DataLakeStoreAccountManagementClient
+from azure.datalake.store import core, lib, multithread
+
+def azure_datalake_token(inifile): #-----------------------------------------<<<
+    """Return token and credentials for AAD authentication in Azure Data Lake.
+
+    inifile = the name of an ini file (in ..\_private, as used by settings())
+              that contains an [aad] section with these values: tenant-id,
+              client-secret, client-id
+    """
+    tenantid = setting(topic=inifile, section='aad', key='tenant-id')
+    clientsecret = setting(topic=inifile, section='aad', key='client-secret')
+    clientid = setting(topic=inifile, section='aad', key='client-id')
+    return (
+        lib.auth(tenant_id=tenantid,
+                 client_secret=clientsecret,
+                 client_id=clientid),
+        ServicePrincipalCredentials(client_id=clientid,
+                                    secret=clientsecret,
+                                    tenant=tenantid))
+
 def bytecount(numbytes): #---------------------------------------------------<<<
     """Convert byte count to display string as bytes, KB, MB or GB.
 
@@ -82,7 +104,7 @@ def cls(): #-----------------------------------------------------------------<<<
     else:
         _ = os.system('clear')
 
-def csv_count(csvfile, column): #------------------------------------<<<
+def csv_count(csvfile, column): #--------------------------------------------<<<
     """Generate a summary of unique values for a column/field.
 
     infile = a CSV file; must have a header row
@@ -423,7 +445,7 @@ def hashkey(string, encoding='utf-8'): #-------------------------------------<<<
     """
     return hashlib.md5(string.encode(encoding)).hexdigest()
 
-def json2csv(jsondata, header=True): #----------------------------------------<<<
+def json2csv(jsondata, header=True): #---------------------------------------<<<
     """Convert JSON data to CSV.
 
     jsondata = string containing a JSON document
