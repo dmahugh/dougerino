@@ -1,7 +1,7 @@
 """General-purpose functions and classes.
 
-Typically we install this with "pip install --editable ." and then can make
-changes/additions here and they're immediately available in other projects.
+Copyright © 2015-2017 by Doug Mahugh. All Rights Reserved.
+Licensed under the MIT License.
 """
 import calendar
 import collections
@@ -22,7 +22,7 @@ from azure.datalake.store import core, lib, multithread
 def azure_datalake_token(inifile): #-----------------------------------------<<<
     """Return token and credentials for AAD authentication in Azure Data Lake.
 
-    inifile = the name of an ini file (in ..\_private, as used by settings())
+    inifile = the name of an ini file (in ../_private, as used by settings())
               that contains an [aad] section with these values: tenant-id,
               client-secret, client-id
     """
