@@ -1,7 +1,4 @@
-# dougerino
-Library of functions for common Python development tasks.
-
-![language:Python](https://img.shields.io/badge/Language-Python-blue.svg?style=flat-square) ![license:MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square) ![release:1.0](https://img.shields.io/badge/Release-1.0-lightgrey.svg?style=flat-square)
+﻿![language:Python](https://img.shields.io/badge/Language-Python-blue.svg?style=flat-square) ![license:MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square) ![release:1.0](https://img.shields.io/badge/Release-1.0-lightgrey.svg?style=flat-square)
 
 # Installation
 
