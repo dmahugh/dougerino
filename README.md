@@ -1,6 +1,32 @@
 # dougerino
 Library of functions for common Python development tasks.
 
+![language:Python](https://img.shields.io/badge/Language-Python-blue.svg?style=flat-square) ![license:MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square) ![release:1.0](https://img.shields.io/badge/Release-1.0-lightgrey.svg?style=flat-square)
+
+# Installation
+
+To install and use the latest stable version of dougerino, install from this GitHub repo's master branch with this command:
+
+```
+pip install git+https://github.com/dmahugh/dougerino.git@master
+```
+
+Note that dougerino library requires the ```requests``` package as well as several Azure packages. See ///requirements.txt and ///setup.py for more information.
+
+# Contributing
+
+Dougerino is a work in progress — pull requests, feature requests and issues welcome. I've implemented functionality as I need it for various projects, but I'm interested in knowing what other types of functionality may be useful to others. Please log an ///issue if you have a suggestion. Thanks!
+
+# License / Copyright
+
+Dougerino is licensed under the [MIT License](https://github.com/dmahugh/dougerino/blob/master/LICENSE).
+
+Copyright © 2015-2017 by Doug Mahugh. All Rights Reserved.
+
+# Usage
+
+Follow these links for a description or example of the usage of each function or class:
+
 * [bytecount](#bytecount)
 * [cdow](#cdow)
 * [ChangeDirectory](#ChangeDirectory)
