@@ -11,11 +11,11 @@ To install and use the latest stable version of dougerino, install from this Git
 pip install git+https://github.com/dmahugh/dougerino.git@master
 ```
 
-Note that dougerino library requires the ```requests``` package as well as several Azure packages. See ///requirements.txt and ///setup.py for more information.
+Note that dougerino library requires the ```requests``` package as well as several Azure packages. See [requirements.txt](https://github.com/dmahugh/dougerino/blob/master/requirements.txt) and [setup.py](https://github.com/dmahugh/dougerino/blob/master/setup.py) for more information.
 
 # Contributing
 
-Dougerino is a work in progress — pull requests, feature requests and issues welcome. I've implemented functionality as I need it for various projects, but I'm interested in knowing what other types of functionality may be useful to others. Please log an ///issue if you have a suggestion. Thanks!
+Dougerino is a work in progress — pull requests, feature requests and issues welcome. I've implemented functionality as I need it for various projects, but I'm interested in knowing what other types of functionality may be useful to others. Please log an [issue](https://github.com/dmahugh/dougerino/issues) if you have a suggestion. Thanks!
 
 # License / Copyright
 
