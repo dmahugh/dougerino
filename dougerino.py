@@ -1,6 +1,6 @@
 """General-purpose functions and classes.
 
-Copyright © 2015-2017 by Doug Mahugh. All Rights Reserved.
+Copyright 2015-2017 by Doug Mahugh. All Rights Reserved.
 Licensed under the MIT License.
 """
 import calendar
