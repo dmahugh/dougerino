@@ -298,14 +298,14 @@ def github_allpages(endpoint=None, auth=None, #------------------------------<<<
                 format(response, len(response.text)))
         if response.ok:
             thispage = json.loads(response.text)
-            # commit data is handled differently from everything else, because
-            # the sheer volume (e.g., over 100K commits in a repo) causes out of
-            # memory errors if all fields are returned.
-            if 'commit' in endpoint:
-                minimized = [_['commit'] for _ in thispage]
-                payload.extend(minimized)
-            else:
-                payload.extend(thispage)
+            #/// in the past, we handled commit data differently because
+            # the sheer volume (e.g., over 100K commits in a repo) causes
+            # out of memory errors if all fields are returned. DISABLED
+            #if 'commit' in endpoint:
+            #    minimized = [_['commit'] for _ in thispage]
+            #    payload.extend(minimized)
+            #else:
+            payload.extend(thispage)
 
         pagelinks = github_pagination(response)
         page_endpoint = pagelinks['nextURL']
@@ -324,7 +324,6 @@ def github_pagination(link_header): #----------------------------------------<<<
     Returns a dictionary with entries for the URLs and page numbers parsed
     from the link string: firstURL, firstpage, prevURL, prevpage, nextURL,
     nextpage, lastURL, lastpage.
-    <internal>
     """
     # initialize the dictionary
     retval = {'firstpage':0, 'firstURL':None, 'prevpage':0, 'prevURL':None,
