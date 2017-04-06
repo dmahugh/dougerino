@@ -8,34 +8,13 @@ import collections
 import configparser
 import csv
 import datetime
+import gzip
 import hashlib
 import json
 import os
 import time
 
 import requests
-
-from azure.common.credentials import ServicePrincipalCredentials
-from azure.mgmt.datalake.store import DataLakeStoreAccountManagementClient
-from azure.datalake.store import core, lib, multithread
-
-def azure_datalake_token(inifile): #-----------------------------------------<<<
-    """Return token and credentials for AAD authentication in Azure Data Lake.
-
-    inifile = the name of an ini file (in ../_private, as used by settings())
-              that contains an [aad] section with these values: tenant-id,
-              client-secret, client-id
-    """
-    tenantid = setting(topic=inifile, section='aad', key='tenant-id')
-    clientsecret = setting(topic=inifile, section='aad', key='client-secret')
-    clientid = setting(topic=inifile, section='aad', key='client-id')
-    return (
-        lib.auth(tenant_id=tenantid,
-                 client_secret=clientsecret,
-                 client_id=clientid),
-        ServicePrincipalCredentials(client_id=clientid,
-                                    secret=clientsecret,
-                                    tenant=tenantid))
 
 def bytecount(numbytes): #---------------------------------------------------<<<
     """Convert byte count to display string as bytes, KB, MB or GB.
@@ -436,6 +415,16 @@ def github_rest_api(*, endpoint=None, auth=None, headers=None, #-------------<<<
                 format(state.last_remaining, used, state.last_ratelimit, username))
 
     return response
+
+def gzunzip(zippedfile, unzippedfile): #-------------------------------------<<<
+    """Decompress a .gz (GNU Zip) file.
+    """
+    with open(unzippedfile, 'w') as fhandle:
+        fhandle.write('githubuser,email\n')
+        for line in gzip.open(zippedfile).readlines():
+            jsondata = json.loads(line.decode('utf-8'))
+            outline = jsondata['ghu'] + ',' + jsondata['aadupn']
+            fhandle.write(outline + '\n')
 
 def hashkey(string, encoding='utf-8'): #-------------------------------------<<<
     """Return MD5 hex digest for a string value.
