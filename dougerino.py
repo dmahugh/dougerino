@@ -20,6 +20,84 @@ from timeit import default_timer
 
 import requests
 
+# logcalls() appears first in this file, so that it can be used to decorate
+# other functions below
+def logcalls(options='args/return/timer'): #---------------------------------<<<
+    """Decorator to log (to console) information about calls to a function.
+
+    options = string containing various options, delimited by /:
+              'args' (default) - show arguments passed to function
+              'args=pprint' - pretty-print the passed arguments
+              'args=no' or 'args=off' - don't show arguments
+              'return' (default) - show value returned by function
+              'return=type' - only show the return value's type/size
+              'return=pprint' - pretty-print the returned value
+              'return=no' or 'return=off' - don't show returned value
+              'timer' (default) - show elapsed time for wrapped function
+              'timer=no' or 'timer=off' - don't show elapsed time
+
+    Note that because we're passing an optional argument to the decorator, you
+    must include the parenthese - @logcalls() - even if no options are passed.
+    To log all calls to function funcname:
+        @logcalls()
+        def funcname(...):
+            ...
+    """
+    # parse options string into an option dictionary
+    option = dict()
+    for option_string in options.lower().split('/'):
+        if '=' in option_string:
+            key, val = option_string.split('=')
+            option[key] = val
+        else:
+            option[option_string] = ''
+
+    def outer_wrapper(func):
+        # use functools to preserve wrapped function metadata (for debugging)
+        @functools.wraps(func)
+        def inner_wrapper(*args, **kwargs):
+
+            # display the wrapped function
+            print((func.__name__ + '(): <<<').ljust(71, '-') + '@logcall')
+
+            # display passed arguments
+            if option.get('args', None) == 'pprint':
+                print('arguments:')
+                print(pprint.pprint(args))
+                print(pprint.pprint(kwargs))
+            elif option.get('args', None) in ['no', 'off']:
+                pass # do nothing
+            else:
+                print('arguments: ' + str(args) + ', ' + str(kwargs))
+
+            if not option.get('timer', None) in ['no', 'off']:
+                start_seconds = default_timer()
+
+            # call the wrapped function
+            return_value = func(*args, **kwargs)
+
+            if not option.get('timer', None) in ['no', 'off']:
+                elapsed_msg = 10*'-' +  'elapsed time: {0:.3f} seconds '. \
+                    format(default_timer() - start_seconds) + 10*'-'
+                print(elapsed_msg.center(80, ' '))
+
+            # display the returned value
+            returned_size = len(str(return_value))
+            if option.get('return', None) == 'type':
+                print('returned: ' + str(type(return_value)) +
+                      ', size = {0} bytes'.format(returned_size))
+            elif option.get('return', None) == 'pprint':
+                print('returned:')
+                print(str(pprint.pprint(return_value)))
+            elif option.get('return', None) in ['no', 'off']:
+                pass # do nothing
+            else:
+                print('returned: ' + str(return_value)) # default behavior
+
+            return return_value
+        return inner_wrapper
+    return outer_wrapper
+
 def bytecount(numbytes): #---------------------------------------------------<<<
     """Convert byte count to display string as bytes, KB, MB or GB.
 
@@ -297,6 +375,7 @@ def github_allpages(endpoint=None, auth=None, #------------------------------<<<
 
     return payload
 
+@logcalls()
 def github_pagination(link_header): #----------------------------------------<<<
     """Parse values from the 'link' HTTP header returned by GitHub API.
 
@@ -473,82 +552,6 @@ def list_projection(values, columns): #--------------------------------------<<<
     for column in columns:
         returned.append(values[column])
     return ','.join(returned)
-
-def logcalls(options='args/return/timer'): #---------------------------------<<<
-    """Decorator to log (to console) information about calls to a function.
-
-    options = string containing various options, delimited by /:
-              'args' (default) - show arguments passed to function
-              'args=pprint' - pretty-print the passed arguments
-              'args=no' or 'args=off' - don't show arguments
-              'return' (default) - show value returned by function
-              'return=type' - only show the return value's type/size
-              'return=pprint' - pretty-print the returned value
-              'return=no' or 'return=off' - don't show returned value
-              'timer' (default) - show elapsed time for wrapped function
-              'timer=no' or 'timer=off' - don't show elapsed time
-
-    Note that because we're passing an optional argument to the decorator, you
-    must include the parenthese - @logcalls() - even if no options are passed.
-    To log all calls to function funcname:
-        @logcalls()
-        def funcname(...):
-            ...
-    """
-    # parse options string into an option dictionary
-    option = dict()
-    for option_string in options.lower().split('/'):
-        if '=' in option_string:
-            key, val = option_string.split('=')
-            option[key] = val
-        else:
-            option[option_string] = ''
-    print(str(option))
-
-    def outer_wrapper(func):
-        # use functools to preserve wrapped function metadata (for debugging)
-        @functools.wraps(func)
-        def inner_wrapper(*args, **kwargs):
-
-            # display the wrapped function
-            print((func.__name__ + '(): <<<').ljust(71, '-') + '@logcall')
-
-            # display passed arguments
-            if option.get('args', None) == 'pprint':
-                print('arguments:')
-                print(pprint.pprint(args))
-                print(pprint.pprint(kwargs))
-            elif option.get('args', None) in ['no', 'off']:
-                pass # do nothing
-            else:
-                print('arguments: ' + str(args) + ', ' + str(kwargs))
-
-            if not option.get('timer', None) in ['no', 'off']:
-                start_seconds = default_timer()
-
-            # call the wrapped function
-            return_value = func(*args, **kwargs)
-
-            if not option.get('timer', None) in ['no', 'off']:
-                elapsed_msg = 10*'-' +  'elapsed time: {0:.3f} seconds '.format(default_timer() - start_seconds) + 10*'-'
-                print(elapsed_msg.center(80, ' '))
-
-            # display the returned value
-            returned_size = len(str(return_value))
-            if option.get('return', None) == 'type':
-                print('returned: ' + str(type(return_value)) +
-                      ', size = {0} bytes'.format(returned_size))
-            elif option.get('return', None) == 'pprint':
-                print('returned:')
-                print(str(pprint.pprint(return_value)))
-            elif option.get('return', None) in ['no', 'off']:
-                pass # do nothing
-            else:
-                print('returned: ' + str(return_value)) # default behavior
-
-            return return_value
-        return inner_wrapper
-    return outer_wrapper
 
 def percent(count, total): #-------------------------------------------------<<<
     """Return a percent value, or 0 if undefined.
