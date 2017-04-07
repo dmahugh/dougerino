@@ -58,7 +58,7 @@ def logcalls(options='args/return/timer'): #---------------------------------<<<
         def inner_wrapper(*args, **kwargs):
 
             # display the wrapped function
-            print((func.__name__ + '(): <<<').ljust(71, '-') + '@logcall')
+            print((' ' + func.__name__ + '(): ').center(80, '-'))
 
             # display passed arguments
             if option.get('args', None) == 'pprint':
@@ -77,9 +77,9 @@ def logcalls(options='args/return/timer'): #---------------------------------<<<
             return_value = func(*args, **kwargs)
 
             if not option.get('timer', None) in ['no', 'off']:
-                elapsed_msg = 10*'-' +  'elapsed time: {0:.3f} seconds '. \
-                    format(default_timer() - start_seconds) + 10*'-'
-                print(elapsed_msg.center(80, ' '))
+                elapsed_msg = ' elapsed: {0:.3f} seconds '. \
+                    format(default_timer() - start_seconds)
+                print(40*' ' + elapsed_msg.center(40, '-'))
 
             # display the returned value
             returned_size = len(str(return_value))
@@ -375,7 +375,6 @@ def github_allpages(endpoint=None, auth=None, #------------------------------<<<
 
     return payload
 
-@logcalls()
 def github_pagination(link_header): #----------------------------------------<<<
     """Parse values from the 'link' HTTP header returned by GitHub API.
 
