@@ -16,6 +16,7 @@ import os
 import pprint
 import time
 
+from fnmatch import fnmatch
 from timeit import default_timer
 
 # logcalls() appears first in this file, so that it can be used to decorate
@@ -447,6 +448,24 @@ def setting(topic, section, key): #------------------------------------------<<<
     except configparser.NoSectionError:
         retval = None
     return retval
+
+def sub_dir(searchfor, folder=None): #---------------------------------------<<<
+    """Find all occurrences of files matching a specified search pattern, in
+    the specified file and its subfolders.
+
+    searchfor = filename pattern to match (for example, '*.py')
+    folder = top-level folder to be searched (default is current folder)
+
+    Returns a list of matches."""
+    if not folder:
+        folder = os.getcwd()
+    print(folder)
+    hits = []
+    for path, _, files in os.walk(folder):
+        for name in files:
+            if fnmatch(name, searchfor):
+                hits.append(os.path.join(path, name))
+    return hits
 
 def time_stamp(filename=None): #---------------------------------------------<<<
     """Return timestamp as a string.
