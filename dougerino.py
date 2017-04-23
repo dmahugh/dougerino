@@ -13,10 +13,15 @@ import gzip
 import hashlib
 import json
 import os
+import platform
 import pprint
+import shutil
+import socket
+import sys
 import time
 
 from fnmatch import fnmatch
+from pip.operations import freeze
 from timeit import default_timer
 
 # logcalls() appears first in this file, so that it can be used to decorate
@@ -466,6 +471,38 @@ def sub_dir(searchfor, folder=None): #---------------------------------------<<<
             if fnmatch(name, searchfor):
                 hits.append(os.path.join(path, name))
     return hits
+
+def sysinfo(newline=None): #----------------------------------------------<<<
+    """Return system information.
+
+    newline = delimiter for returned list of key/value pairs; if not
+              specified, a dictionary of key/value pairs is returned
+
+    Since this information is typically used for diagnostic printing or
+    displaying of values, all vaues are returned as strings.
+    """
+    sys_info = dict()
+    sys_info['PY_VERSION'] = sys.version.strip().split(' ')[0] + \
+        (' (64-bit)' if '64 bit' in sys.version else ' (32-bit)')
+    sys_info['PY_LOCATION'] = sys.prefix
+    sys_info['PY_PACKAGES'] = ','.join([_ for _ in freeze.freeze()])
+    sys_info['PY_PATH'] = ','.join(sys.path)
+    sys_info['OS_VERSION'] = platform.platform()
+    sys_info['HOST_NAME'] = socket.gethostname()
+    sys_info['HOST_PROC'] = \
+        os.environ['PROCESSOR_ARCHITECTURE'] + ', ' + \
+        os.environ['PROCESSOR_IDENTIFIER'].split(' ')[0] + ', ' + \
+        os.environ['NUMBER_OF_PROCESSORS'] + ' cores'
+    sys_info['HOST_IPADDR'] = socket.gethostbyname(socket.gethostname())
+    sys_info['DIRECTORY'] = os.getcwd()
+    size, used, free = shutil.disk_usage('/')
+    sys_info['DISK_SIZE'] = '{:,}'.format(size)
+    sys_info['DISK_USED'] = '{:,}'.format(used)
+    sys_info['DISK_FREE'] = '{:,}'.format(free)
+
+    if newline:
+        return newline.join([key + ': ' + sys_info[key] for key in sorted(sys_info)])
+    return sys_info
 
 def time_stamp(filename=None): #---------------------------------------------<<<
     """Return timestamp as a string.
