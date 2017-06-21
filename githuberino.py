@@ -3,10 +3,11 @@
 Copyright 2015-2017 by Doug Mahugh. All Rights Reserved.
 Licensed under the MIT License.
 """
+import configparser
 import json
+import os
 
 import requests
-from dougerino import setting
 
 def github_allpages(endpoint=None, auth=None, #------------------------------<<<
                     headers=None, state=None, session=None):
@@ -171,4 +172,23 @@ def github_rest_api(*, endpoint=None, auth=None, headers=None, #-------------<<<
                 format(state.last_remaining, used, state.last_ratelimit, username))
 
     return response
+
+def setting(topic, section, key): #------------------------------------------<<<
+    """Retrieve a private setting stored in a local .ini file.
+
+    topic = name of the ini file; e.g., 'azure' for azure.ini
+    section = section within the .ini file
+    key = name of the key within the section
+
+    Returns the value if found, None otherwise.
+    """
+    source_folder = os.path.dirname(os.path.realpath(__file__))
+    inifile = os.path.join(source_folder, '../_private/' + topic.lower() + '.ini')
+    config = configparser.ConfigParser()
+    config.read(inifile)
+    try:
+        retval = config.get(section, key)
+    except configparser.NoSectionError:
+        retval = None
+    return retval
 
